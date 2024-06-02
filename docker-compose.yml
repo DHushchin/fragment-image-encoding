@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - "8501:8501"
+    environment:
+      - MONGO_URI=mongodb://mongo:27018/fragments  # Updated port here
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo:latest
+    ports:
+      - "27018:27017"  # Use a different port on the host
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:
