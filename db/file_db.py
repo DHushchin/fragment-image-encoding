@@ -8,7 +8,7 @@ from fragment import Fragment
 
 class FileDB(BaseDB):
     def __init__(self):
-        self.save_path = '/Users/dmytro.hushchin/Documents/repos/diploma-project/db/fragments.npy'
+        self.save_path = '/db/fragments.npy'
         self.fragments = {}
         self.target_size = 64
         self.tree = None
@@ -53,5 +53,4 @@ class FileDB(BaseDB):
     
 
     def save_results(self):
-        pass
-        # np.save(self.save_path, self.fragments)
+        np.save(self.save_path, self.fragments)

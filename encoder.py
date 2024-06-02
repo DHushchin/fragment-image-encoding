@@ -121,9 +121,6 @@ class Encoder:
     
 
     def decode(self, compressed_indexes: bytes, img_size: tuple) -> np.array:
-        """
-        Метод для декодирования сжатых данных.
-        """
         decoded_data = lzma.decompress(compressed_indexes)
         decoded_array = np.frombuffer(decoded_data, dtype=np.uint64)
         decoded_info = [tuple(decoded_array[i:i+3]) for i in range(0, len(decoded_array), 3)]
@@ -148,11 +145,11 @@ class Encoder:
         start_time = time()
         batch_size = 64
 
-        # Собираем все изображения в один большой батч для эффективности
+        # Transform fragments into a tensor
         fragment_images = np.array([fragment.img for fragment in fragments])
         fragment_images = tf.convert_to_tensor(fragment_images, dtype=tf.float32)
 
-        # Обрабатываем изображения пакетами
+        # Prepare fragments in batches
         num_batches = (len(fragments) + batch_size - 1) // batch_size
         prep_fragments = []
         for i in range(num_batches):
@@ -276,7 +273,7 @@ class Encoder:
             # Assign the mean color to the empty pixels
             reconstructed_image[y, x] = mean_color
 
-        # reconstructed_image = self.blend_fragments(fragments, reconstructed_image, img_size)
+        #reconstructed_image = self.blend_fragments(fragments, reconstructed_image, img_size)
 
         return reconstructed_image
     
@@ -321,7 +318,7 @@ class Encoder:
 
     def get_ssim(self, original_img: np.array, decoded_img: np.array) -> float:
         """
-        Метод для вычисления среднего SSIM между оригинальным и декодированным изображениями.
+        Computes the Structural Similarity Index (SSIM) between two images.
         """
         similarity = ssim_metric(original_img, decoded_img, multichannel=True, win_size=min(self.db.target_size, 7), channel_axis=2)
         return similarity
