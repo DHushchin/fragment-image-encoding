@@ -26,7 +26,7 @@ class Encoder:
         self.db_type = 'mongo'
         self.db = DBFactory(self.db_type).get_db()
         self.similarity_threshold = 0.95
-        self.model = tf.keras.applications.ResNet50(include_top=False, weights='imagenet', input_shape=(224, 224, 3))
+        self.model = tf.keras.applications.ResNet50(weights='imagenet', input_shape=(224, 224, 3))
         self.kernel_size = 32
         self.step_size = 16
 
